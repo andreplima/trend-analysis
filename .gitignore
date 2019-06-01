@@ -1,0 +1,11 @@
+*.bak
+*.log
+*.pptx
+*.docx
+*.ppt
+*.doc
+~$*.*
+__pycache__
+essays
+sp500
+!sp500/original

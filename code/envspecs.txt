@@ -1,0 +1,302 @@
+1. Environment specification
+
+Setting up the environment:
+
+  conda create --name trend2 python=3 Cython numba beautifulsoup4 matplotlib patsy
+
+	# The following NEW packages will be INSTALLED:
+	# 
+	#     beautifulsoup4:  4.6.0-py36_0
+	#     blas:            1.0-mkl
+	#     certifi:         2016.2.28-py36_0
+	#     cycler:          0.10.0-py36_0
+	#     icu:             57.1-vc14_0
+	#     jpeg:            9b-vc14_0
+	#     libpng:          1.6.30-vc14_1
+	#     llvmlite:        0.20.0-py36_0
+	#     matplotlib:      2.0.2-np113py36_0
+	#     mkl:             2017.0.3-0
+	#     numba:           0.35.0-np113py36_0
+	#     numpy:           1.13.1-py36_0
+	#     openssl:         1.0.2l-vc14_0
+	#     patsy:           0.4.1-py36_0
+	#     pip:             9.0.1-py36_1
+	#     pyparsing:       2.2.0-py36_0
+	#     pyqt:            5.6.0-py36_2
+	#     python:          3.6.2-0
+	#     python-dateutil: 2.6.1-py36_0
+	#     pytz:            2017.2-py36_0
+	#     qt:              5.6.2-vc14_6
+	#     setuptools:      36.4.0-py36_1
+	#     sip:             4.18-py36_0
+	#     six:             1.10.0-py36_0
+	#     tk:              8.5.18-vc14_0
+	#     vc:              14-0
+	#     vs2015_runtime:  14.0.25420-0
+	#     wheel:           0.29.0-py36_0
+	#     wincertstore:    0.2-py36_0
+	#     zlib:            1.2.11-vc14_0
+
+  activate trend
+  python -m pip install --upgrade pip
+
+  pip install scipy==1.2.1 numpy==1.16.3 keras==2.1.2 scikit-learn==0.20.0 pyts
+	## packages in environment at C:\Users\andre\Miniconda3\envs\trend:
+	##
+	#beautifulsoup4            4.6.0                    py36_0
+	#blas                      1.0                         mkl
+	#certifi                   2016.2.28                py36_0
+	#cycler                    0.10.0                   py36_0
+	#icu                       57.1                     vc14_0  [vc14]
+	#jpeg                      9b                       vc14_0  [vc14]
+	#Keras                     2.1.2                     <pip>
+	#libpng                    1.6.30                   vc14_1  [vc14]
+	#llvmlite                  0.20.0                   py36_0
+	#matplotlib                2.0.2               np113py36_0
+	#mkl                       2017.0.3                      0
+	#numba                     0.35.0              np113py36_0
+	#numpy                     1.13.1                   py36_0
+	#numpy                     1.16.3                    <pip>
+	#openssl                   1.0.2l                   vc14_0  [vc14]
+	#patsy                     0.4.1                    py36_0
+	#pip                       19.1.1                    <pip>
+	#pip                       9.0.1                    py36_1
+	#pyparsing                 2.2.0                    py36_0
+	#pyqt                      5.6.0                    py36_2
+	#python                    3.6.2                         0
+	#python-dateutil           2.6.1                    py36_0
+	#pyts                      0.8.0                     <pip>
+	#pytz                      2017.2                   py36_0
+	#PyYAML                    5.1                       <pip>
+	#qt                        5.6.2                    vc14_6  [vc14]
+	#scikit-learn              0.20.0                    <pip>
+	#scipy                     1.2.1                     <pip>
+	#setuptools                36.4.0                   py36_1
+	#sip                       4.18                     py36_0
+	#six                       1.10.0                   py36_0
+	#tk                        8.5.18                   vc14_0  [vc14]
+	#vc                        14                            0
+	#vs2015_runtime            14.0.25420                    0
+	#wheel                     0.29.0                   py36_0
+	#wincertstore              0.2                      py36_0
+	#zlib                      1.2.11                   vc14_0  [vc14]
+
+  pip install Cython=0.29.7 -c anaconda
+  pip install pmdarima
+	## packages in environment at C:\Users\andre\Miniconda3\envs\trend:
+	##
+	#beautifulsoup4            4.6.0                    py36_0
+	#blas                      1.0                         mkl
+	#certifi                   2016.2.28                py36_0
+	#cycler                    0.10.0                   py36_0
+	#Cython                    0.29.7                    <pip>
+	#icu                       57.1                     vc14_0  [vc14]
+	#jpeg                      9b                       vc14_0  [vc14]
+	#Keras                     2.1.2                     <pip>
+	#libpng                    1.6.30                   vc14_1  [vc14]
+	#llvmlite                  0.20.0                   py36_0
+	#matplotlib                2.0.2               np113py36_0
+	#mkl                       2017.0.3                      0
+	#numba                     0.35.0              np113py36_0
+	#numpy                     1.13.1                   py36_0
+	#numpy                     1.16.3                    <pip>
+	#openssl                   1.0.2l                   vc14_0  [vc14]
+	#pandas                    0.24.2                    <pip>
+	#patsy                     0.4.1                    py36_0
+	#pip                       9.0.1                    py36_1
+	#pip                       19.1.1                    <pip>
+	#pmdarima                  1.2.0                     <pip>
+	#pyparsing                 2.2.0                    py36_0
+	#pyqt                      5.6.0                    py36_2
+	#python                    3.6.2                         0
+	#python-dateutil           2.6.1                    py36_0
+	#pyts                      0.8.0                     <pip>
+	#pytz                      2017.2                   py36_0
+	#PyYAML                    5.1                       <pip>
+	#qt                        5.6.2                    vc14_6  [vc14]
+	#scikit-learn              0.20.0                    <pip>
+	#scipy                     1.2.1                     <pip>
+	#setuptools                36.4.0                   py36_1
+	#sip                       4.18                     py36_0
+	#six                       1.10.0                   py36_0
+	#statsmodels               0.9.0                     <pip>
+	#tk                        8.5.18                   vc14_0  [vc14]
+	#vc                        14                            0
+	#vs2015_runtime            14.0.25420                    0
+	#wheel                     0.29.0                   py36_0
+	#wincertstore              0.2                      py36_0
+	#zlib                      1.2.11                   vc14_0  [vc14]
+
+	# https://github.com/kamalkraj/Named-Entity-Recognition-with-Bidirectional-LSTM-CNNs/issues/6
+	# the seq2seq-lstm package required tensorflow 1.4.1+ and keras 2.1.2+
+  pip install tensorflow==1.6.0 seq2seq-lstm
+	## packages in environment at C:\Users\andre\Miniconda3\envs\trend:
+	##
+	#absl-py                   0.7.1                     <pip>
+	#beautifulsoup4            4.6.0                    py36_0
+	#blas                      1.0                         mkl
+	#bleach                    1.5.0                     <pip>
+	#certifi                   2016.2.28                py36_0
+	#cycler                    0.10.0                   py36_0
+	#Cython                    0.29.7                    <pip>
+	#h5py                      2.9.0                     <pip>
+	#html5lib                  0.9999999                 <pip>
+	#icu                       57.1                     vc14_0  [vc14]
+	#jpeg                      9b                       vc14_0  [vc14]
+	#Keras                     2.1.2                     <pip>
+	#libpng                    1.6.30                   vc14_1  [vc14]
+	#llvmlite                  0.20.0                   py36_0
+	#Markdown                  3.1.1                     <pip>
+	#matplotlib                2.0.2               np113py36_0
+	#mkl                       2017.0.3                      0
+	#numba                     0.35.0              np113py36_0
+	#numpy                     1.16.3                    <pip>
+	#numpy                     1.13.1                   py36_0
+	#openssl                   1.0.2l                   vc14_0  [vc14]
+	#pandas                    0.24.2                    <pip>
+	#patsy                     0.4.1                    py36_0
+	#pip                       9.0.1                    py36_1
+	#pip                       19.1.1                    <pip>
+	#pmdarima                  1.2.0                     <pip>
+	#protobuf                  3.7.1                     <pip>
+	#pyparsing                 2.2.0                    py36_0
+	#pyqt                      5.6.0                    py36_2
+	#python                    3.6.2                         0
+	#python-dateutil           2.6.1                    py36_0
+	#pyts                      0.8.0                     <pip>
+	#pytz                      2017.2                   py36_0
+	#PyYAML                    5.1                       <pip>
+	#qt                        5.6.2                    vc14_6  [vc14]
+	#scikit-learn              0.20.0                    <pip>
+	#scipy                     1.2.1                     <pip>
+	#seq2seq-lstm              0.1.4                     <pip>
+	#setuptools                36.4.0                   py36_1
+	#sip                       4.18                     py36_0
+	#six                       1.10.0                   py36_0
+	#statsmodels               0.9.0                     <pip>
+	#tensorflow                1.5.0                     <pip>
+	#tensorflow-tensorboard    1.5.1                     <pip>
+	#tk                        8.5.18                   vc14_0  [vc14]
+	#vc                        14                            0
+	#vs2015_runtime            14.0.25420                    0
+	#Werkzeug                  0.15.4                    <pip>
+	#wheel                     0.29.0                   py36_0
+	#wincertstore              0.2                      py36_0
+	#zlib                      1.2.11                   vc14_0  [vc14]
+  
+  pip install cpi
+  python
+    import cpi
+    cpi.update()
+    quit()
+
+	## packages in environment at C:\Users\andre\Miniconda3\envs\trend:
+	##
+	#absl-py                   0.7.1                     <pip>
+	#beautifulsoup4            4.6.0                    py36_0
+	#blas                      1.0                         mkl
+	#bleach                    1.5.0                     <pip>
+	#certifi                   2016.2.28                py36_0
+	#certifi                   2019.3.9                  <pip>
+	#chardet                   3.0.4                     <pip>
+	#Click                     7.0                       <pip>
+	#cpi                       0.1.15                    <pip>
+	#cycler                    0.10.0                   py36_0
+	#Cython                    0.29.7                    <pip>
+	#h5py                      2.9.0                     <pip>
+	#html5lib                  0.9999999                 <pip>
+	#icu                       57.1                     vc14_0  [vc14]
+	#idna                      2.8                       <pip>
+	#jpeg                      9b                       vc14_0  [vc14]
+	#Keras                     2.1.2                     <pip>
+	#libpng                    1.6.30                   vc14_1  [vc14]
+	#llvmlite                  0.20.0                   py36_0
+	#Markdown                  3.1.1                     <pip>
+	#matplotlib                2.0.2               np113py36_0
+	#mkl                       2017.0.3                      0
+	#numba                     0.35.0              np113py36_0
+	#numpy                     1.16.3                    <pip>
+	#numpy                     1.13.1                   py36_0
+	#openssl                   1.0.2l                   vc14_0  [vc14]
+	#pandas                    0.24.2                    <pip>
+	#patsy                     0.4.1                    py36_0
+	#pip                       9.0.1                    py36_1
+	#pip                       19.1.1                    <pip>
+	#pmdarima                  1.2.0                     <pip>
+	#protobuf                  3.7.1                     <pip>
+	#pyparsing                 2.2.0                    py36_0
+	#pyqt                      5.6.0                    py36_2
+	#python                    3.6.2                         0
+	#python-dateutil           2.6.1                    py36_0
+	#python-dateutil           2.8.0                     <pip>
+	#pyts                      0.8.0                     <pip>
+	#pytz                      2017.2                   py36_0
+	#PyYAML                    5.1                       <pip>
+	#qt                        5.6.2                    vc14_6  [vc14]
+	#requests                  2.22.0                    <pip>
+	#scikit-learn              0.20.0                    <pip>
+	#scipy                     1.2.1                     <pip>
+	#seq2seq-lstm              0.1.4                     <pip>
+	#setuptools                36.4.0                   py36_1
+	#sip                       4.18                     py36_0
+	#six                       1.10.0                   py36_0
+	#statsmodels               0.9.0                     <pip>
+	#tensorflow                1.5.0                     <pip>
+	#tensorflow-tensorboard    1.5.1                     <pip>
+	#tk                        8.5.18                   vc14_0  [vc14]
+	#urllib3                   1.25.3                    <pip>
+	#vc                        14                            0
+	#vs2015_runtime            14.0.25420                    0
+	#Werkzeug                  0.15.4                    <pip>
+	#wheel                     0.29.0                   py36_0
+	#wincertstore              0.2                      py36_0
+	#zlib                      1.2.11                   vc14_0  [vc14]
+
+
+  ---
+  ?
+  pip install recommark sphinx nbsphinx numpydoc CommonMark
+  pip install pymc3
+
+
+
+(trend) D:\>conda list
+# packages in environment at D:\Users\Andre\Miniconda3\envs\trend:
+#
+beautifulsoup4            4.6.0                    py36_0
+blas                      1.0                         mkl
+certifi                   2016.2.28                py36_0
+cycler                    0.10.0                   py36_0
+Cython                    0.29.7                    <pip>
+icu                       57.1                     vc14_0  [vc14]
+jpeg                      9b                       vc14_0  [vc14]
+libpng                    1.6.30                   vc14_1  [vc14]
+matplotlib                2.0.2               np113py36_0
+mkl                       2017.0.3                      0
+numpy                     1.13.1                   py36_0
+numpy                     1.16.3                    <pip>
+openssl                   1.0.2l                   vc14_0  [vc14]
+pandas                    0.24.2                    <pip>
+patsy                     0.4.1                    py36_0
+pip                       9.0.1                    py36_1
+pip                       19.1                      <pip>
+pmdarima                  1.2.0                     <pip>
+pyparsing                 2.2.0                    py36_0
+pyqt                      5.6.0                    py36_2
+python                    3.6.2                         0
+python-dateutil           2.6.1                    py36_0
+pytz                      2017.2                   py36_0
+qt                        5.6.2                    vc14_6  [vc14]
+scikit-learn              0.19.0              np113py36_0
+scipy                     0.19.1              np113py36_0
+scipy                     1.2.1                     <pip>
+setuptools                36.4.0                   py36_1
+sip                       4.18                     py36_0
+six                       1.10.0                   py36_0
+statsmodels               0.9.0                     <pip>
+tk                        8.5.18                   vc14_0  [vc14]
+vc                        14                            0
+vs2015_runtime            14.0.25420                    0
+wheel                     0.29.0                   py36_0
+wincertstore              0.2                      py36_0
+zlib                      1.2.11                   vc14_0  [vc14]
