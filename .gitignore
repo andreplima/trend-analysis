@@ -7,5 +7,5 @@
 ~$*.*
 __pycache__
 essays
-sp500
-!sp500/original
+datasets/sp500/E*
+datasets/sp500/T*
