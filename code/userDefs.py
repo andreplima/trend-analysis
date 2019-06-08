@@ -41,6 +41,8 @@ if(sys.argv[0] == 'optimise.py'):
     def inflate(v, past, to=None): return -1 #raise ValueError
 
 if(sys.argv[0] == 'measure.py'):
+  import bootstrapped.bootstrap as bs
+  import bootstrapped.stats_functions as bs_stats
   from scipy                       import interp
   from sklearn.metrics             import confusion_matrix, roc_curve, auc
   from sklearn.preprocessing       import label_binarize
@@ -65,7 +67,7 @@ ECO_CLASS_UP       = 'Up'
 ECO_ALL_CLASSES    = [ECO_CLASS_DOWN, ECO_CLASS_STABLE, ECO_CLASS_UP]
 
 TypeConstituent = namedtuple('TypeConstituent', 'name sector first last')
-TypeResult      = namedtuple('TypeResult', 'ss accuracy smape')
+TypeResult      = namedtuple('TypeResult', 'ss accuracy smape accuracy_lb accuracy_ub smape_lb smape_ub')
 #--------------------------------------------------------------------------------------------------
 # General purpose definitions
 #--------------------------------------------------------------------------------------------------
@@ -665,7 +667,7 @@ def model_ma(ticker, timepos, param_modelinit, priceType, timeline, constituents
   parameters recovered from model initialisation dictionary:
   st - the length of the "short term" range
   """
-	
+
   st = param_modelinit['ST']
   segment = [stocks[(ticker, timeline[timepos - j - 1])][priceType] for j in range(st)]
   return np.mean(segment)
@@ -1299,43 +1301,79 @@ def getFolderOptimise(param_sampling, param_models, param_adjinflat, param_optim
 # Problem-specific definitions: assess ensemble (level 3)
 #--------------------------------------------------------------------------------------------------
 
+#def computeMetrics(pairs):
+#  all_true = []
+#  all_pred = []
+#  results  = {}
+#  for ticker in pairs:
+#
+#    # computes the accuracy for a specific ticker
+#    y_true, y_pred = zip(*[(realClass, predClass) for (timepos, realVal, predVal, realClass, predClass) in pairs[ticker]])
+#    v_accuracy = computeAccuracy(y_true, y_pred)
+#    all_true += y_true
+#    all_pred += y_pred
+#
+#    # computes the error (SMAPE measure) for a specific ticker
+#    y_true, y_pred = zip(*[(realVal, predVal) for (timepos, realVal, predVal, realClass, predClass) in pairs[ticker]])
+#    v_smape = computeSmape(y_true, y_pred)
+#
+#    results[ticker] = TypeResult(len(y_true), v_accuracy, v_smape)
+#
+#  ens_ss  = 0
+#  ens_acc = 0.0
+#  ens_err = 0.0
+#  for ticker in results:
+#    (ss, accuracy, error) = results[ticker]
+#    ens_ss  += ss
+#    ens_acc += ss * accuracy
+#    ens_err += ss * error
+#
+#  results[ECO_TICKER_ENSEMBLE] = TypeResult(ens_ss, ens_acc/ens_ss, ens_err/ens_ss)
+#
+#  return results, all_true, all_pred
+
+#def computeAccuracy(y_true, y_pred):
+#  return sum([1 if y_true[i] == y_pred[i] else 0 for i in range(len(y_true))])/len(y_true) # metric from Vo, Luo and Vuo
+#
+#def computeSmape(y_true, y_pred):
+#  return sum([abs(y_true[i] - y_pred[i])/(.5 * (y_true[i] + y_pred[i])) for i in range(len(y_pred))]) / len(y_true)
+
 def computeMetrics(pairs):
-  all_true = []
-  all_pred = []
   results  = {}
   for ticker in pairs:
 
     # computes the accuracy for a specific ticker
     y_true, y_pred = zip(*[(realClass, predClass) for (timepos, realVal, predVal, realClass, predClass) in pairs[ticker]])
-    v_accuracy = computeAccuracy(y_true, y_pred)
-    all_true += y_true
-    all_pred += y_pred
+    v_accuracy, v_accuracy_lb, v_accuracy_ub = computeAccuracy(y_true, y_pred)
 
     # computes the error (SMAPE measure) for a specific ticker
     y_true, y_pred = zip(*[(realVal, predVal) for (timepos, realVal, predVal, realClass, predClass) in pairs[ticker]])
-    v_smape = computeSmape(y_true, y_pred)
+    v_smape, v_smape_lb, v_smape_ub = computeSmape(y_true, y_pred)
 
-    results[ticker] = TypeResult(len(y_true), v_accuracy, v_smape)
+    results[ticker] = TypeResult(len(y_true), v_accuracy, v_smape, v_accuracy_lb, v_accuracy_ub, v_smape_lb, v_smape_ub)
 
-  ens_ss  = 0
-  ens_acc = 0.0
-  ens_err = 0.0
-  for ticker in results:
-    (ss, accuracy, error) = results[ticker]
-    ens_ss  += ss
-    ens_acc += ss * accuracy
-    ens_err += ss * error
+  # computes the accuracy of the model
+  all_pairs = list(chain.from_iterable(pairs.values()))
+  all_true, all_pred = zip(*[(realClass, predClass) for (timepos, realVal, predVal, realClass, predClass) in all_pairs])
+  v_accuracy, v_accuracy_lb, v_accuracy_ub = computeAccuracy(all_true, all_pred)
 
-  results[ECO_TICKER_ENSEMBLE] = TypeResult(ens_ss, ens_acc/ens_ss, ens_err/ens_ss)
+  # computes the error (SMAPE measure) for a specific ticker
+  y_true, y_pred = zip(*[(realVal, predVal) for (timepos, realVal, predVal, realClass, predClass) in all_pairs])
+  v_smape, v_smape_lb, v_smape_ub = computeSmape(y_true, y_pred)
+
+  results[ECO_TICKER_ENSEMBLE] = TypeResult(len(y_true), v_accuracy, v_smape, v_accuracy_lb, v_accuracy_ub, v_smape_lb, v_smape_ub)
 
   return results, all_true, all_pred
 
 def computeAccuracy(y_true, y_pred):
-  #return accuracy_score(y_true, y_pred)
-  return sum([1 if y_true[i] == y_pred[i] else 0 for i in range(len(y_true))])/len(y_true) # metric from Vo, Luo and Vuo
+  sample = np.array([1 if y_true[i] == y_pred[i] else 0 for i in range(len(y_true))])
+  res = bs.bootstrap(sample, stat_func=bs_stats.mean)
+  return (res.value, res.lower_bound, res.upper_bound)
 
 def computeSmape(y_true, y_pred):
-  return sum([abs(y_true[i] - y_pred[i])/(.5 * (y_true[i] + y_pred[i])) for i in range(len(y_pred))]) / len(y_true)
+  sample = np.array([abs(y_true[i] - y_pred[i])/(.5 * (y_true[i] + y_pred[i])) for i in range(len(y_pred))])
+  res = bs.bootstrap(sample, stat_func=bs_stats.mean)
+  return (res.value, res.lower_bound, res.upper_bound)
 
 def plot_confusion_matrix(y_true, y_pred, title, saveit, param_targetpath, filename, cmap=plt.cm.Reds):
   """
@@ -1364,7 +1402,7 @@ def plot_confusion_matrix(y_true, y_pred, title, saveit, param_targetpath, filen
   thresh = cm.max() / 2.
   for i in range(cm.shape[0]):
       for j in range(cm.shape[1]):
-          ax.text(j, i, format(cm[i, j], fmt),
+          ax.text(j, i, format(cm[i, j], fmt), size=12,
                   ha="center", va="center",
                   color="white" if cm[i, j] > thresh else "black")
 
@@ -1462,9 +1500,15 @@ def plot_ROC_curve(y_true, y_pred, title, saveit, param_targetpath, filename, cm
 
 def getPlotDesc(configid, param_sampling, param_models, param_adjinflat, param_optimode):
 
-  group = {'C0':'Test set', 'C1': 'Baseline', 'C2': 'Winter', 'C3': 'Summer'}[configid]
-  modelstr = param_models[0][0] if len(param_models) == 1 else 'ensemble'
-  adjinflat  = {False: 'unadjusted', True: 'adjusted'}[param_adjinflat]
-  optmode    = {False: 'unit',       True: 'optimised'}[param_optimode]
+  group = {'C0':'Test', 'C1': 'Baseline', 'C2': 'Winter', 'C3': 'Summer'}[configid]
+  if(len(param_models) == 1):
+    if(param_models[0][0] == 'ARIMA'):
+      modelstr = 'SARIMA'
+    else:
+      modelstr = param_models[0][0]
+  else:
+    modelstr = 'ensemble'
+  adjinflat  = {False: 'unadjusted',    True: 'adjusted'}[param_adjinflat]
+  optmode    = {False: 'non-optimised', True: 'optimised'}[param_optimode]
 
   return '{0} stocks, {1} sampling\n{2}, {3} prices, {4} weights'.format(group, param_sampling, modelstr, adjinflat, optmode)

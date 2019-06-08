@@ -5,7 +5,7 @@
 @REM example: run T01 C1 p  same as before, but performs only the preprocess step
 
 @REM export PYTHONHASHSEED = 23
-echo running %1 %2 %3 with PARAM_MODELS=%PARAM_MODELS%, PARAM_SAMPLING=%PARAM_SAMPLING%, PARAM_ADJINFLAT=%PARAM_ADJINFLAT%, PARAM_OPTIMODE=%PARAM_OPTIMODE%
+echo [%time%] running %1 %2 %3 with PARAM_MODELS=%PARAM_MODELS%, PARAM_SAMPLING=%PARAM_SAMPLING%, PARAM_ADJINFLAT=%PARAM_ADJINFLAT%, PARAM_OPTIMODE=%PARAM_OPTIMODE% >> essay.log
 
 set flag_preprocess="0"
 set flag_forecast="0"

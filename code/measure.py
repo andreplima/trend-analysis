@@ -12,7 +12,6 @@ from userDefs import ECO_SEED, tsprint, saveLog, setupEssayConfig, getEssayParam
 from userDefs import getMountedOn, getFolderOptimise, getPlotDesc, computeMetrics, plot_confusion_matrix, plot_ROC_curve
 from userDefs import ECO_TICKER_ENSEMBLE
 
-
 def main(essay_configs):
 
   """
@@ -118,8 +117,8 @@ def main(essay_configs):
 
       tsprint('Computing ensemble accuracy.')
       results, all_true, all_pred = computeMetrics(pairs)
-      (ss, accuracy, error) = results[ECO_TICKER_ENSEMBLE]
-      tsprint('-- ensemble metrics: sample size: {0}, accuracy: {1:5.3f}, error: {2:5.3f}'.format(ss, accuracy, error))
+      res = results[ECO_TICKER_ENSEMBLE]
+      tsprint('-- ensemble metrics: sample size: {0}, accuracy: {1:5.3f}, error: {2:5.3f}'.format(res.ss, res.accuracy, res.smape))
 
       tsprint('Plotting the confusion matrix and ROC curve for the ensemble.')
       plotDesc = getPlotDesc(configid, param_sampling, param_models, param_adjinflat, param_optimode)
@@ -132,7 +131,7 @@ def main(essay_configs):
                               '{0}'.format(plotDesc),
                               param_saveimages, param_targetpath, 'roc_{0}_{1}'.format(configid, folder))
       else:
-        tsprint('-- ROC curve was not produced because confusion matrix is collapsed into a single class.')
+        tsprint('-- ROC curve was not produced because confusion matrix misses at least one class.')
 
       # ------------------------------------------------------------------------------------------------------
 

@@ -108,13 +108,13 @@ def main(essay_configs):
 
       tsprint('Selecting test points in timeline to which forecasts will be generated.')
       testPoints = selectTestPoints(timeline, param_testpoints, param_timeline, param_sampling)
-      tsprint('-- {0} test points allocated to the sample to be employed in model evaluation:'.format(len(testPoints)))
+      tsprint('-- {0} test points allocated to the sample to be employed in model evaluation.'.format(len(testPoints)))
       tsprint('   {0}'.format(', '.join([ts2datestr(timeline[timepos]) + ' ({0})'.format(timepos) for timepos in testPoints])), False)
 
       tsprint('Performing forecasts for selected test points.')
       forecasts, failures = applyModels(param_stocklist, param_stockexcp, param_prices, param_models, param_modelinit, testPoints, timeline, constituents, stocks)
-      tsprint('-- {0} forecasts were performed (#stocks:{1}, #models:{2}, #prices:{3}, #testpoints: {4}):'.format(len(forecasts), len(param_stocklist), len(param_models), len(param_prices), len(testPoints)))
-      tsprint('-- {0} forecasts failed because the raw data was unavailable or the model failed:'.format(failures))
+      tsprint('-- {0} forecasts were performed (#stocks:{1}, #models:{2}, #prices:{3}, #testpoints: {4}).'.format(len(forecasts), len(param_stocklist), len(param_models), len(param_prices), len(testPoints)))
+      tsprint('-- {0} forecasts failed because the raw data was unavailable or the model failed.'.format(failures))
 
       if(exists(join(*param_targetpath, 'forecasts.pkl'))):
         tsprint('Updating forecasts previously computed for this config.')
