@@ -1,0 +1,5 @@
+Ticker	Sample Size	Accuracy	SMAPE
+AAPL	18	0.833	0.052
+IBM	18	0.833	0.023
+HPQ	7	1.000	0.041
+Ensemble	43	0.860	0.038
