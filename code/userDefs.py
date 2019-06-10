@@ -1500,7 +1500,7 @@ def plot_ROC_curve(y_true, y_pred, title, saveit, param_targetpath, filename, cm
 
 def getPlotDesc(configid, param_sampling, param_models, param_adjinflat, param_optimode):
 
-  group = {'C0':'Test', 'C1': 'Baseline', 'C2': 'Winter', 'C3': 'Summer'}[configid]
+  group = {'C0':'Test', 'C1': 'Baseline', 'C2': 'Defensive', 'C3': 'Cyclical'}[configid]
   if(len(param_models) == 1):
     if(param_models[0][0] == 'ARIMA'):
       modelstr = 'SARIMA'
